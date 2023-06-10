@@ -7,11 +7,24 @@ using namespace std::chrono_literals;
  // TODO create timer that publish FriendInfo msg 10 times per second 
 class SenderNode : public rclcpp::Node{
   public:
-    SenderNode() : Node("SenderNode"){
-      
+    SenderNode() : Node("SenderNode") {
+      publisher = this->create_publisher<friend_msgs::msg::FriendInfo>("/r2d2_pose", 10);
+      timer = this->create_wall_timer(
+        100ms,
+        std::bind(&SenderNode::timer_callback, this)
+      );
     }
-  private:
 
+  private:
+    rclcpp::Publisher<friend_msgs::msg::FriendInfo>::SharedPtr publisher;
+    rclcpp::TimerBase::SharedPtr timer;
+
+    void timer_callback() {
+      auto message = friend_msgs::msg::FriendInfo();
+      message.name = "r2d2";
+      message.id = 456;
+      publisher->publish(message);
+    }
 };
 
 int main(int argc, char** argv){

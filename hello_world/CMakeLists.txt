@@ -15,8 +15,8 @@ set(dependencies
 add_executable(publisher_node src/friend_hello_pub_todo.cpp)
 ament_target_dependencies(publisher_node ${dependencies})
 
-# add_executable(publisher_class_node src/friend_hello_pub_class_todo.cpp)
-# ament_target_dependencies(publisher_class_node ${dependencies})
+add_executable(publisher_class_node src/friend_hello_pub_class_todo.cpp)
+ament_target_dependencies(publisher_class_node ${dependencies})
 
 add_executable(subscriber_node src/friend_hello_sub_todo.cpp)
 ament_target_dependencies(subscriber_node ${dependencies})
@@ -35,7 +35,7 @@ ament_target_dependencies(subscriber_node ${dependencies})
 
 install(TARGETS
   publisher_node
-  # publisher_class_node 
+  publisher_class_node 
   subscriber_node 
   # executor_nodes
   # service_server
