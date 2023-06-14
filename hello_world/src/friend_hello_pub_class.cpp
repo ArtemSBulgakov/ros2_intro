@@ -14,6 +14,7 @@ class SenderNode : public rclcpp::Node{
     void timer_callback(){
       message_.id = 345;
       message_.name = "d2r2";
+      message_.food_items = {123, 432};
       publisher_->publish(message_);
     }
   
