@@ -15,9 +15,9 @@ public:
     auto callback_linear_x = [this](const rclcpp::Parameter &p) {
       RCLCPP_INFO(this->get_logger(), "callback_linear_x: Received an update to parameter \"%s\" "
                   "of type %s: \"%s\"", p.get_name().c_str(), p.get_type_name().c_str(), p); 
-      user_name_ = p;
+      user_name_ = p.as_string();
     };
-    cb_handle_ = param_subscriber_->add_parameter_callback("user_name", user_name_);
+    cb_handle_ = param_subscriber_->add_parameter_callback("user_name", callback_linear_x);
 
     declare_parameter("user_id", 345);
     declare_parameter("friends_names", std::vector<std::string>());

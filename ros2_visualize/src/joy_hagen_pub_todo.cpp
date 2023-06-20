@@ -24,21 +24,31 @@ class HagenPub : public rclcpp::Node{
     void sendMessages(){
       // TODO define message types of std_msgs::msg::Int32, geometry_msgs::msg::Vector3 and 
       //  friend_msgs::srv::SetSpeed
+      std_msgs::msg::Int32 msg_temperature;
+      geometry_msgs::msg::Vector3 msg_imu_acceleration;
+      friend_msgs::srv::SetSpeed::Request set_speed_msg;
      
       int i = 0;
       rclcpp::Rate rate(200ms);
       while( rclcpp::ok() ) {
         // TODO set temperature value, i.e., you can define it as you wish
+        msg_temperature.data = 456;
         // TODO set acceleration values: x, y, and z
-        // TODO set desired speed 
+        msg_imu_acceleration.x = 0.6*i;
+        msg_imu_acceleration.y = 0.34*i;
+        msg_imu_acceleration.z = 0.45*i;
+        // TODO set desired speed
+        set_speed_msg.desired_speed = 1.2;
         // TODO publish msg_temperature and msg_imu_acceleration 
+        temp_pub_->publish(msg_temperature);
+        acc_pub_->publish(msg_imu_acceleration);
         // TODO call the service srv_speed and if it get executed, print previous_speed and new_speed
         auto request = std::make_shared<friend_msgs::srv::SetSpeed::Request>();
         request->desired_speed = 0.45*i;
         auto future = client_get_speed_->async_send_request(request);
         RCLCPP_INFO(get_logger(), "Trying to call the /speed service for setting speed");
         // TODO ? is there something wrong here if so fix it 
-        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) == rclcpp::FutureReturnCode::SUCCESS){
+        if(rclcpp::spin_until_future_complete(this->shared_from_this(), future, 5s) == rclcpp::FutureReturnCode::SUCCESS){
           RCLCPP_INFO_STREAM(get_logger(), "service respose "<< future.get()->new_speed);
         }else{
           RCLCPP_ERROR(get_logger(), "Something wrong with the server");

@@ -20,10 +20,13 @@ class HagenPubMarkerArray : public rclcpp::Node{
 
       visualization_msgs::msg::Marker msg_marker;
       // TODO set header frame id of msg_marker as the "marker_frame"
+      msg_marker.header.frame_id = "marker_frame";
       msg_marker.ns = "shapes";
       msg_marker.id = 0;
       // TODO set msg_marker type and actions as  visualization_msgs::Marker::CUBE and visualization_msgs::Marker::ADD ,
       // respectively 
+      msg_marker.type = visualization_msgs::msg::Marker::CUBE;
+      msg_marker.action = visualization_msgs::msg::Marker::ADD;
 
       msg_marker.pose.position.x = 0.;
       msg_marker.pose.position.y = 1.;
@@ -47,6 +50,7 @@ class HagenPubMarkerArray : public rclcpp::Node{
       rclcpp::Rate rate(1s);
       while( rclcpp::ok() ) {
         // TODO set msg_marker header time stamp
+        msg_marker.header.stamp = this->now();
         msg_marker.pose.position.x += 0.01;
         msg_marker.type = visualization_msgs::msg::Marker::SPHERE;
         msg_marker.pose.position.y += 0.02;
